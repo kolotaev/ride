@@ -3,9 +3,9 @@ package org.kolotaev.rid
 import org.scalatest._
 
 class IdSpec extends FlatSpec with Matchers {
-
   "ID" should "support parts extraction" in {
-    val id = Id
+    val id: Id = Id()
+    id.getDecoding should be (new Array[Byte](256))
     id.time should be (888)
     id.machine should be (888)
     id.pid should be (888)
