@@ -1,31 +1,36 @@
 package org.kolotaev.rid
 
+import scala.util.Random
+import java.security.MessageDigest
+import java.net.InetAddress
+
 object System {
   def machineID: Array[Byte] = {
     val id = Array[Byte](3)
-    id
+//    val hostname = management.ManagementFactory.getRuntimeMXBean.getName.split("@")(1)
+    val hostname = InetAddress.getLocalHost.getHostName
+
+//    val m = MessageDigest.getInstance("MD5")
+//    val b = hostname.getBytes("UTF-8")
+//    m.update(b, 0, b.length)
+//    new java.math.BigInteger(1, m.digest()).toString(16).reverse.padTo(32, "0").reverse.mkString
+
+//    MessageDigest.getInstance("MD5").digest(hostname.getBytes)
+//    m.digest().map("%02x".format(_)).mkString -- slower
+
+    MessageDigest.getInstance("MD5").digest(hostname.getBytes).slice(0, 3)
   }
 
   def randomInt: Int = {
-    val id = Array[Byte](3)
-    55
+    val bytes = Array[Byte](3)
+    Random.nextBytes(bytes)
+    Math.abs(bytes(0) << 16 | bytes(1) << 8 | bytes(2))
   }
 
   def processID: Long = {
-    // todo - only for *nix now.
-    import sys.process._
-    Seq("sh", "-c", "echo $PPID").!!.trim.toLong
-
-    //  val vote = null
-    //  def getPID: Long = {
-    //    val processName = management.ManagementFactory.getRuntimeMXBean.getName
-    //    if (processName != null && processName.length > 0) try
-    //      return Long.parseLong(processName.split("@")(0))
-    //    catch {
-    //      case e: Exception =>
-    //        return 0
-    //    }
-    //    0
-    //  }
+    var result: Long = 0
+    try result = management.ManagementFactory.getRuntimeMXBean.getName.split("@")(0).toLong
+    catch { case _: Exception => }
+    result
   }
 }
