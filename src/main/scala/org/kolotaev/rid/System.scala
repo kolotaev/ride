@@ -6,16 +6,16 @@ import java.net.{InetAddress, UnknownHostException}
 
 object System {
   def machineID: Array[Byte] = {
-    try {
-      val hostname = InetAddress.getLocalHost.getHostName
-      MessageDigest.getInstance("MD5").digest(hostname.getBytes).slice(0, 3)
-    } catch {
-      case UnknownHostException => {
+    try
+      MessageDigest.getInstance("MD5")
+        .digest(InetAddress.getLocalHost.getHostName.getBytes)
+        .slice(0, 3)
+    catch {
+      case _: UnknownHostException =>
         // Fallback to random number if hostname is unavailable
         val bytes = Array[Byte](3)
         Random.nextBytes(bytes)
         bytes
-      }
     }
   }
 
