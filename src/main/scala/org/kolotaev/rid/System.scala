@@ -13,16 +13,16 @@ object System {
     catch {
       case _: UnknownHostException =>
         // Fallback to random number if hostname is unavailable
-        val bytes = Array[Byte](3)
+        val bytes = Array.fill[Byte](3)(0)
         Random.nextBytes(bytes)
         bytes
     }
   }
 
   def randomInt: Int = {
-    val bytes = Array[Byte](3)
+    val bytes: Array[Byte] = Array.fill[Byte](3)(0)
     Random.nextBytes(bytes)
-    Math.abs(bytes(0) << 16 | bytes(1) << 8 | bytes(2))
+    bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
   def processID: Long = {
