@@ -25,9 +25,10 @@ object System {
     bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
-  def processID: Long = {
-    var result: Long = 0
-    try result = management.ManagementFactory.getRuntimeMXBean.getName.split("@")(0).toLong
+  def processID: Int = {
+    // default to random value if PID can't be obtained. In most cases it won't happen
+    var result: Int = Random.nextInt
+    try result = management.ManagementFactory.getRuntimeMXBean.getName.split("@")(0).toInt
     catch { case _: Exception => }
     result
   }
