@@ -1,6 +1,8 @@
 package org.kolotaev.rid
 
 import java.util.concurrent.atomic.AtomicInteger
+import java.nio.ByteBuffer
+import java.time.{LocalDateTime, Instant, ZoneId}
 
 object Id {
   final val BinaryLen: Byte = 12
@@ -28,13 +30,13 @@ class Id {
   private val value: Array[Byte] = Array.fill[Byte](BinaryLen)(0)
 
   // put first 4 bytes from current timestamp
-  val timestamp: Int = (java.lang.System.currentTimeMillis / 1000).toInt
+  val timestamp: Int = System.timestamp
   value(0) = (timestamp >> 24).toByte
   value(1) = (timestamp >> 16).toByte
   value(2) = (timestamp >> 8).toByte
   value(3) = timestamp.toByte
 
-  // next 3 bytes are the machine ID taken from its md5 hash of the hostname
+  // next 3 bytes are the machine ID taken from md5 hash of the hostname
   value(4) = machineID(0)
   value(5) = machineID(1)
   value(6) = machineID(2)
@@ -50,13 +52,9 @@ class Id {
   value(11) = i.toByte
 
 
-  def getDecoding = {
-    decoding
-  }
-
-  def time: Int = {
-    value.slice(0, 4)
-    55
+  def time: LocalDateTime = {
+    val ts = ByteBuffer.wrap(value.slice(0, 4)).getInt
+    LocalDateTime.ofInstant(Instant.ofEpochSecond(ts), ZoneId.systemDefault)
   }
 
   def machine: Array[Byte] = {
