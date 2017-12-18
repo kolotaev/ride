@@ -61,14 +61,14 @@ class Id {
     value.slice(4, 7)
   }
 
-  def pid: Int = {
-    value.slice(7, 9)
-    88
+  def pid: Short = {
+    ByteBuffer.wrap(value.slice(7, 9)).getShort
   }
 
   def counter: Int = {
-    value.slice(9, 12)
-    17
+    // todo - int enough???
+    val bytes = value.slice(9, 12)
+    bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
   override def toString: String = {
