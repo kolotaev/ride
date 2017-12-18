@@ -1,3 +1,3 @@
-# Rid
+# Ride
 
 # WIP

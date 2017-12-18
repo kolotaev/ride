@@ -1,4 +1,4 @@
-package org.kolotaev.rid
+package org.kolotaev.ride
 
 import scala.util.Random
 import java.security.MessageDigest

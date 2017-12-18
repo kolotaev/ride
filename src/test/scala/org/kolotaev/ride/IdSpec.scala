@@ -1,4 +1,4 @@
-package org.kolotaev.rid
+package org.kolotaev.ride
 
 import org.scalatest._
 import java.time._

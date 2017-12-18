@@ -1,4 +1,4 @@
-package org.kolotaev.rid
+package org.kolotaev.ride
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.nio.ByteBuffer
