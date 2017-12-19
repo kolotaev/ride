@@ -72,14 +72,35 @@ class Id {
   }
 
   override def toString: String = {
-    "stub"
+    encode.mkString
   }
 
-  private def encode: String = {
-    "foo"
+  private def encode: Array[Char] = {
+    val result = Array.fill[Char](EncodedLen)(0xFF.toChar)
+    result(0) = encodeTable(value(0) >> 3)
+    result(1) = encodeTable((value(1) >> 6) & 0x1F | (value(0) << 2) & 0x1F)
+    result(2) = encodeTable((value(1) >> 1) & 0x1F)
+    result(3) = encodeTable((value(2) >> 4) & 0x1F | (value(1) << 4) & 0x1F)
+    result(4) = encodeTable(value(3) >> 7 | (value(2) << 1) & 0x1F)
+    result(5) = encodeTable((value(3)>>2)&0x1F)
+    result(6) = encodeTable(value(4)>>5|(value(3)<<3)&0x1F)
+    result(7) = encodeTable(value(4)&0x1F)
+    result(8) = encodeTable(value(5)>>3)
+    result(9) = encodeTable((value(6)>>6)&0x1F|(value(5)<<2)&0x1F)
+    result(10) = encodeTable((value(6)>>1)&0x1F)
+    result(11) = encodeTable((value(7)>>4)&0x1F|(value(6)<<4)&0x1F)
+    result(12) = encodeTable(value(8)>>7|(value(7)<<1)&0x1F)
+    result(13) = encodeTable((value(8)>>2)&0x1F)
+    result(14) = encodeTable((value(9)>>5)|(value(8)<<3)&0x1F)
+    result(15) = encodeTable(value(9)&0x1F)
+    result(16) = encodeTable(value(10)>>3)
+    result(17) = encodeTable((value(11)>>6)&0x1F|(value(10)<<2)&0x1F)
+    result(18) = encodeTable((value(11)>>1)&0x1F)
+    result(19) = encodeTable((value(11)<<4)&0x1F)
+    result
   }
 
-  private def decode(s: String) = {
-
+  private def decode(s: String): Id = {
+    Id()
   }
 }
