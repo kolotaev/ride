@@ -28,7 +28,7 @@ class IdSpec extends FlatSpec with Matchers {
     ids(0).pid should equal (ids(1).pid)
     ids(1).pid should equal (ids(2).pid)
 
-    ids(0).pid shouldBe equal (0)
+    ids(0).pid shouldBe > (0)
   }
 
   "ID's counter part" should "increase monotonically" in {
@@ -37,6 +37,11 @@ class IdSpec extends FlatSpec with Matchers {
     ids(1).counter should be < ids(2).counter
     ids(2).counter should be < ids(3).counter
     ids(3).counter should be < ids(4).counter
+  }
+
+  "ID" should "be converted to string" in {
+    val id = Id()
+    s"$id" should equal ("aaa")
   }
 
 //  it should "throw NoSuchElementException if an empty stack is popped" in {
