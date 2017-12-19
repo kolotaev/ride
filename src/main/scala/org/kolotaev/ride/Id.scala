@@ -77,30 +77,34 @@ class Id {
 
   private def encode: Array[Char] = {
     val result = Array.fill[Char](EncodedLen)(0xFF.toChar)
-    result(0) = encodeTable(value(0) >> 3)
-    result(1) = encodeTable((value(1) >> 6) & 0x1F | (value(0) << 2) & 0x1F)
-    result(2) = encodeTable((value(1) >> 1) & 0x1F)
-    result(3) = encodeTable((value(2) >> 4) & 0x1F | (value(1) << 4) & 0x1F)
-    result(4) = encodeTable(value(3) >> 7 | (value(2) << 1) & 0x1F)
-    result(5) = encodeTable((value(3)>>2)&0x1F)
-    result(6) = encodeTable(value(4)>>5|(value(3)<<3)&0x1F)
-    result(7) = encodeTable(value(4)&0x1F)
-    result(8) = encodeTable(value(5)>>3)
-    result(9) = encodeTable((value(6)>>6)&0x1F|(value(5)<<2)&0x1F)
-    result(10) = encodeTable((value(6)>>1)&0x1F)
-    result(11) = encodeTable((value(7)>>4)&0x1F|(value(6)<<4)&0x1F)
-    result(12) = encodeTable(value(8)>>7|(value(7)<<1)&0x1F)
-    result(13) = encodeTable((value(8)>>2)&0x1F)
-    result(14) = encodeTable((value(9)>>5)|(value(8)<<3)&0x1F)
-    result(15) = encodeTable(value(9)&0x1F)
-    result(16) = encodeTable(value(10)>>3)
-    result(17) = encodeTable((value(11)>>6)&0x1F|(value(10)<<2)&0x1F)
-    result(18) = encodeTable((value(11)>>1)&0x1F)
-    result(19) = encodeTable((value(11)<<4)&0x1F)
+    result(0) = encodeTable(v(0) >> 3)
+    result(1) = encodeTable((v(1) >> 6) & 0x1F | (v(0) << 2) & 0x1F)
+    result(2) = encodeTable((v(1) >> 1) & 0x1F)
+    result(3) = encodeTable((v(2) >> 4) & 0x1F | (v(1) << 4) & 0x1F)
+    result(4) = encodeTable(v(3) >> 7 | (v(2) << 1) & 0x1F)
+    result(5) = encodeTable((v(3) >> 2) & 0x1F)
+    result(6) = encodeTable(v(4) >> 5 | (v(3) << 3) & 0x1F)
+    result(7) = encodeTable(v(4) & 0x1F)
+    result(8) = encodeTable(v(5) >> 3)
+    result(9) = encodeTable((v(6) >> 6) & 0x1F | (v(5) << 2) & 0x1F)
+    result(10) = encodeTable((v(6) >> 1) & 0x1F)
+    result(11) = encodeTable((v(7) >> 4) & 0x1F | (v(6) << 4) & 0x1F)
+    result(12) = encodeTable(v(8) >> 7 | (v(7) << 1) & 0x1F)
+    result(13) = encodeTable((v(8) >> 2) & 0x1F)
+    result(14) = encodeTable((v(9) >> 5) | (v(8) << 3) & 0x1F)
+    result(15) = encodeTable(v(9) & 0x1F)
+    result(16) = encodeTable(v(10) >> 3)
+    result(17) = encodeTable((v(11) >> 6) & 0x1F | (v(10) << 2) & 0x1F)
+    result(18) = encodeTable((v(11) >> 1) & 0x1F)
+    result(19) = encodeTable((v(11) << 4) & 0x1F)
     result
   }
 
   private def decode(s: String): Id = {
     Id()
+  }
+
+  private def v(i: Int): Int = {
+    if (value(i) < 0) value(i) + 256 else value(i).toInt
   }
 }
