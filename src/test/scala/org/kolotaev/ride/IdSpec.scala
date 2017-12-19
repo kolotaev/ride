@@ -40,8 +40,20 @@ class IdSpec extends FlatSpec with Matchers {
   }
 
   "ID" should "be converted to string" in {
-    val id = Id()
-    s"$id" should equal ("aaa")
+    val id1 = Id()
+    val id2 = Id()
+    s"$id1" shouldNot equal (s"$id2")
+  }
+
+  "IDs" should "print me!!!!!!!" in {
+    (1 to 100) foreach {_ =>
+      println(Id())
+    }
+  }
+
+  "IDs" should "be unique" in {
+    val ids: Array[String] = Array.fill[String](1000000){ Id().toString }
+    ids.toSet.size should equal (ids.length)
   }
 
 //  it should "throw NoSuchElementException if an empty stack is popped" in {
