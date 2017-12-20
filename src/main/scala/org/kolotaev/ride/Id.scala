@@ -46,7 +46,7 @@ class Id {
   value(8) = PID.toByte
 
   // next 3 bytes are from ID counter
-  val i: Int = idCounter.incrementAndGet()
+  val i: Int = idCounter.incrementAndGet
   value(9) = (i >> 16).toByte
   value(10) = (i >> 8).toByte
   value(11) = i.toByte
@@ -54,7 +54,8 @@ class Id {
 
   def this(str: String) {
     this
-    // todo - what about counter?
+    // Spare counter increment is not valid in case of constructing from string
+    idCounter.decrementAndGet
     decode(str)
   }
 

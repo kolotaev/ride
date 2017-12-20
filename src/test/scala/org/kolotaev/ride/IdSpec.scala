@@ -38,6 +38,7 @@ class IdSpec extends FlatSpec with Matchers {
     ids(1).counter should be < ids(2).counter
     ids(2).counter should be < ids(3).counter
     ids(3).counter should be < ids(4).counter
+    (ids(4).counter - ids(0).counter) should equal (4)
   }
 
   "ID" should "be converted to string" in {
@@ -64,6 +65,15 @@ class IdSpec extends FlatSpec with Matchers {
       Id().toString
     }
     ids.toSet.size should equal (ids.length)
+  }
+
+  "IDs" should "not increment counter when constructed with string" in {
+    val a = Id()
+    new Id(a.toString)
+    new Id(a.toString)
+    val c = Id()
+    val diff = c.counter - a.counter
+    diff should equal (1)
   }
 
   "IDs" should "support round-trip" in {
