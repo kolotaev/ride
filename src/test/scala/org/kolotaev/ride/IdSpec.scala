@@ -3,6 +3,9 @@ package org.kolotaev.ride
 import org.scalatest._
 import java.time._
 import scala.util.Random
+import java.io.{ObjectOutputStream, ObjectInputStream}
+import java.io.{FileOutputStream, FileInputStream}
+
 
 class IdSpec extends FlatSpec with Matchers {
   "ID" should "support parts extraction: time" in {
@@ -78,19 +81,34 @@ class IdSpec extends FlatSpec with Matchers {
 
   "IDs" should "support round-trip" in {
     val a = Id()
-    val b = new Id(new Id(new Id(a.toString).toString).toString)
+    val b = Id(Id(Id(a.toString).toString).toString)
     s"$b" should equal (s"$a")
   }
 
   "IDs" should "be converted to itself back and forth and be not equal as objects" in {
     val a = Id()
-    val b = new Id(a.toString)
+    val b = Id(a.toString)
     b shouldNot equal (a)
   }
 
   "IDs" should "be converted to itself back and forth and be equal as strings" in {
     val a = Id()
     val b = new Id(a.toString)
+    s"$b" should equal (s"$a")
+  }
+
+  "ID" should "be serializable" in {
+    val file = s"/tmp/org_kolotaev_ride_${System.timestamp}"
+    val a = Id()
+
+    val os = new ObjectOutputStream(new FileOutputStream(file))
+    os.writeObject(a)
+    os.close()
+
+    val is = new ObjectInputStream(new FileInputStream(file))
+    val b = is.readObject
+    is.close()
+
     s"$b" should equal (s"$a")
   }
 }

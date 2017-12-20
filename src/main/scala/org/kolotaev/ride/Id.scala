@@ -9,7 +9,7 @@ object Id {
   final val BinaryLen: Byte = 12
   final val EncodedLen: Byte = 20
 
-  // We do not use standard base32 char stable, but rather a lowercase one
+  // We do not use standard base32 char table, but rather a lowercase one
   private val encodeTable = "0123456789abcdefghijklmnopqrstuv"
 
   private val decodeTable: Array[Byte] = Array.fill[Byte](256)(0xFF.toByte)
@@ -21,9 +21,13 @@ object Id {
   private val idCounter = new AtomicInteger(System.randomInt)
 
   def apply(): Id = new Id()
+
+  def apply(str: String): Id = new Id(str)
 }
 
-class Id {
+// todo - decide on long value
+@SerialVersionUID(100L)
+class Id extends Serializable {
   import Id._
 
   // Constructing id value:
