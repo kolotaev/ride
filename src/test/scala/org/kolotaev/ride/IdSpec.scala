@@ -2,6 +2,7 @@ package org.kolotaev.ride
 
 import org.scalatest._
 import java.time._
+import scala.util.Random
 
 class IdSpec extends FlatSpec with Matchers {
   "ID" should "support parts extraction: time" in {
@@ -49,6 +50,7 @@ class IdSpec extends FlatSpec with Matchers {
     (1 to 100) foreach {_ =>
       println(Id())
     }
+    1 should equal (5)
   }
 
   "IDs" should "be unique" in {
@@ -56,10 +58,29 @@ class IdSpec extends FlatSpec with Matchers {
     ids.toSet.size should equal (ids.length)
   }
 
-//  it should "throw NoSuchElementException if an empty stack is popped" in {
-//    val emptyStack = new Stack[Int]
-//    a [NoSuchElementException] should be thrownBy {
-//      emptyStack.pop()
-//    }
-//  }
+  "IDs" should "be unique with random time sleep" in {
+    val ids: Array[String] = Array.fill[String](1000000) {
+      Thread.sleep(Random.nextInt(1))
+      Id().toString
+    }
+    ids.toSet.size should equal (ids.length)
+  }
+
+  "IDs" should "support round-trip" in {
+    val a = Id()
+    val b = new Id(new Id(new Id(a.toString).toString).toString)
+    s"$b" should equal (s"$a")
+  }
+
+  "IDs" should "be converted to itself back and forth and be not equal as objects" in {
+    val a = Id()
+    val b = new Id(a.toString)
+    b shouldNot equal (a)
+  }
+
+  "IDs" should "be converted to itself back and forth and be equal as strings" in {
+    val a = Id()
+    val b = new Id(a.toString)
+    s"$b" should equal (s"$a")
+  }
 }

@@ -2,18 +2,18 @@ package org.kolotaev.ride
 
 import java.util.concurrent.atomic.AtomicInteger
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 import java.time.{LocalDateTime, Instant, ZoneId}
 
 object Id {
   final val BinaryLen: Byte = 12
   final val EncodedLen: Byte = 20
-  final val DecodedLen: Byte = 15
 
+  // We do not use standard base32 char stable, but rather a lowercase one
   private val encodeTable = "0123456789abcdefghijklmnopqrstuv"
 
-  // Initialize decoding array
-  private val decoding: Array[Byte] = Array.fill[Byte](256)(0xFF.toByte)
-  for ((el, i) <- encodeTable.zipWithIndex) decoding(el) = i.toByte
+  private val decodeTable: Array[Byte] = Array.fill[Byte](256)(0xFF.toByte)
+  for ((el, i) <- encodeTable.zipWithIndex) decodeTable(el) = i.toByte
 
   // Get helper values
   private val machineID = System.machineID
@@ -52,6 +52,12 @@ class Id {
   value(11) = i.toByte
 
 
+  def this(str: String) {
+    this
+    // todo - what about counter?
+    decode(str)
+  }
+
   def time: LocalDateTime = {
     val ts = ByteBuffer.wrap(value.slice(0, 4)).getInt
     LocalDateTime.ofInstant(Instant.ofEpochSecond(ts), ZoneId.systemDefault)
@@ -76,7 +82,7 @@ class Id {
   }
 
   private def encode: Array[Char] = {
-    val result = Array.fill[Char](EncodedLen)(0xFF.toChar)
+    val result = new Array[Char](EncodedLen)
     result(0) = encodeTable(v(0) >> 3)
     result(1) = encodeTable((v(1) >> 6) & 0x1F | (v(0) << 2) & 0x1F)
     result(2) = encodeTable((v(1) >> 1) & 0x1F)
@@ -100,8 +106,20 @@ class Id {
     result
   }
 
-  private def decode(s: String): Id = {
-    Id()
+  private def decode(s: String): Unit = {
+    val src: Array[Byte] = s.getBytes(Charset.forName("ASCII"))
+    value(0) = (decodeTable(src(0)) << 3 | decodeTable(src(1)) >> 2).toByte
+    value(1) = (decodeTable(src(1)) << 6 | decodeTable(src(2)) << 1 | decodeTable(src(3)) >> 4).toByte
+    value(2) = (decodeTable(src(3)) << 4 | decodeTable(src(4)) >> 1).toByte
+    value(3) = (decodeTable(src(4)) << 7 | decodeTable(src(5)) << 2 | decodeTable(src(6)) >> 3).toByte
+    value(4) = (decodeTable(src(6)) << 5 | decodeTable(src(7))).toByte
+    value(5) = (decodeTable(src(8)) << 3 | decodeTable(src(9)) >> 2).toByte
+    value(6) = (decodeTable(src(9)) << 6 | decodeTable(src(10)) << 1 | decodeTable(src(11)) >> 4).toByte
+    value(7) = (decodeTable(src(11)) << 4 | decodeTable(src(12)) >> 1).toByte
+    value(8) = (decodeTable(src(12)) << 7 | decodeTable(src(13)) << 2 | decodeTable(src(14)) >> 3).toByte
+    value(9) = (decodeTable(src(14)) << 5 | decodeTable(src(15))).toByte
+    value(10) = (decodeTable(src(16)) << 3 | decodeTable(src(17)) >> 2).toByte
+    value(11) = (decodeTable(src(17)) << 6 | decodeTable(src(18)) << 1 | decodeTable(src(19)) >> 4).toByte
   }
 
   private def v(i: Int): Int = {
