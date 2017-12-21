@@ -111,4 +111,10 @@ class IdSpec extends FlatSpec with Matchers {
 
     s"$b" should equal (s"$a")
   }
+
+  "IDs" should "be sortable" in {
+    val ids: Array[Id] = Array[Id](Id(), Id(), Id(), Id(), Id())
+    ids.sortWith(_ < _)
+    ids should equal (ids)
+  }
 }

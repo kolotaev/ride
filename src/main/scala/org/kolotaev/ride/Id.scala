@@ -27,7 +27,7 @@ object Id {
 
 // todo - decide on long value
 @SerialVersionUID(100L)
-class Id extends Serializable {
+class Id extends Serializable with Ordered[Id] {
   import Id._
 
   // Constructing id value:
@@ -84,6 +84,10 @@ class Id extends Serializable {
 
   override def toString: String = {
     encode.mkString
+  }
+
+  def compare(that: Id): Int = {
+    value.toString compare that.value.toString
   }
 
   private def encode: Array[Char] = {
