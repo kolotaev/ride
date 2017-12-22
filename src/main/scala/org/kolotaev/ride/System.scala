@@ -4,6 +4,7 @@ import scala.util.Random
 import java.security.MessageDigest
 import java.net.{InetAddress, UnknownHostException}
 
+
 object System {
   def machineID: Array[Byte] = {
     try

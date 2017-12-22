@@ -62,11 +62,9 @@ class IdSpec extends FlatSpec with Matchers {
     s"$a".length should be (20)
   }
 
-  "IDs" should "print me!!!!!!!" in {
-    (1 to 100) foreach {_ =>
-      println(Id())
-    }
-    1 should equal (5)
+  "ID getBytes" should "return its bytes-array representation" in {
+    val a = Id("b8ugqqqoith6livvvvug")
+    a.getBytes should be (Array[Byte](90, 61, 13, 107, 88, -105, 98, 106, -53, -1, -1, -3))
   }
 
   "IDs" should "be unique" in {
@@ -93,6 +91,8 @@ class IdSpec extends FlatSpec with Matchers {
 
   "ID" should "throw IllegalArgumentException if wrong base32 string is passed to constructor" in {
     val data = List(
+      "",
+      "invalid",
       "B8SITO2oithdkWou65bg",
       "ssd232",
       "b8sito2oithdkeou65xy"

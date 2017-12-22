@@ -5,6 +5,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.time.{LocalDateTime, Instant, ZoneId}
 
+
 object Id {
   final val BinaryLen: Byte = 12
   final val EncodedLen: Byte = 20
@@ -85,9 +86,11 @@ class Id extends Serializable with Ordered[Id] {
     bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
-  override def toString: String = encode.mkString
+  def getBytes: Array[Byte] = value
 
   def compare(that: Id): Int = this.toString compare that.toString
+
+  override def toString: String = encode.mkString
 
   private def encode: Array[Char] = {
     val result = new Array[Char](EncodedLen)
