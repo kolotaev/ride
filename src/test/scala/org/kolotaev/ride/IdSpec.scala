@@ -28,11 +28,18 @@ class IdSpec extends FlatSpec with Matchers {
   }
 
   "ID's pid part" should "be the same for all IDs generated within the same process" in {
-    val ids: Array[Id] = Array[Id](Id(), Id(), Id())
+    val ids: Array[Id] = Array[Id](Id(), Id(), Id(), Id())
     ids(0).pid should equal (ids(1).pid)
     ids(1).pid should equal (ids(2).pid)
+    ids(3).pid should equal (ids(2).pid)
+  }
 
-    ids(0).pid shouldBe > (0)
+  "ID's pid part" should "be positive" in {
+    Id().pid shouldBe > (0.toShort)
+  }
+
+  "ID's pid part" should "not represent the real Process ID" in {
+    assert(Id().pid != System.processID)
   }
 
   "ID's counter part" should "increase monotonically" in {
@@ -48,6 +55,11 @@ class IdSpec extends FlatSpec with Matchers {
     val id1 = Id()
     val id2 = Id()
     s"$id1" shouldNot equal (s"$id2")
+  }
+
+  "IDs" should "be a 20 characters long string when being printed" in {
+    val a = Id()
+    s"$a".length should be (20)
   }
 
   "IDs" should "print me!!!!!!!" in {
@@ -77,6 +89,19 @@ class IdSpec extends FlatSpec with Matchers {
     val c = Id()
     val diff = c.counter - a.counter
     diff should equal (1)
+  }
+
+  "ID" should "throw IllegalArgumentException if wrong base32 string is passed to constructor" in {
+    val data = List(
+      "B8SITO2oithdkWou65bg",
+      "ssd232",
+      "b8sito2oithdkeou65xy"
+    )
+    for (i <- data) {
+      a [IllegalArgumentException] should be thrownBy {
+        Id(i)
+      }
+    }
   }
 
   "IDs" should "support round-trip" in {
@@ -112,7 +137,16 @@ class IdSpec extends FlatSpec with Matchers {
     s"$b" should equal (s"$a")
   }
 
-  "IDs" should "be sortable" in {
+  "IDs" should "be comparable" in {
+    val a = Id()
+    val b = Id()
+    val c = Id()
+    a should be < b
+    b should be < c
+    c should be > a
+  }
+
+  "IDs" should "be sortable wth comparison operators" in {
     val ids: Array[Id] = Array[Id](Id(), Id(), Id(), Id(), Id())
     ids.sortWith(_ < _)
     ids should equal (ids)

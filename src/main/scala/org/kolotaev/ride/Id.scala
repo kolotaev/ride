@@ -9,7 +9,7 @@ object Id {
   final val BinaryLen: Byte = 12
   final val EncodedLen: Byte = 20
 
-  // We do not use standard base32 char table, but rather a lowercase one
+  // We do not use standard base32 char table for better sorting support
   private val encodeTable = "0123456789abcdefghijklmnopqrstuv"
 
   private val decodeTable: Array[Byte] = Array.fill[Byte](256)(0xFF.toByte)
@@ -34,7 +34,7 @@ class Id extends Serializable with Ordered[Id] {
   private val value: Array[Byte] = Array.fill[Byte](BinaryLen)(0)
 
   // put first 4 bytes from current timestamp
-  val timestamp: Int = System.timestamp
+  private val timestamp: Int = System.timestamp
   value(0) = (timestamp >> 24).toByte
   value(1) = (timestamp >> 16).toByte
   value(2) = (timestamp >> 8).toByte
@@ -50,7 +50,7 @@ class Id extends Serializable with Ordered[Id] {
   value(8) = PID.toByte
 
   // next 3 bytes are from ID counter
-  val i: Int = idCounter.incrementAndGet
+  private val i: Int = idCounter.incrementAndGet
   value(9) = (i >> 16).toByte
   value(10) = (i >> 8).toByte
   value(11) = i.toByte
@@ -60,6 +60,13 @@ class Id extends Serializable with Ordered[Id] {
     this
     // Spare counter increment is not valid in case of constructing from string
     idCounter.decrementAndGet
+
+    val pattern = s"[$encodeTable]{20}".r
+    str match {
+      case pattern() =>
+      case _ => throw new IllegalArgumentException(s"Argument should be 20 chars of any in $encodeTable")
+    }
+
     decode(str)
   }
 
@@ -68,13 +75,9 @@ class Id extends Serializable with Ordered[Id] {
     LocalDateTime.ofInstant(Instant.ofEpochSecond(ts), ZoneId.systemDefault)
   }
 
-  def machine: Array[Byte] = {
-    value.slice(4, 7)
-  }
+  def machine: Array[Byte] = value.slice(4, 7)
 
-  def pid: Short = {
-    ByteBuffer.wrap(value.slice(7, 9)).getShort
-  }
+  def pid: Short = ByteBuffer.wrap(value.slice(7, 9)).getShort
 
   def counter: Int = {
     // todo - int enough???
@@ -82,13 +85,9 @@ class Id extends Serializable with Ordered[Id] {
     bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
-  override def toString: String = {
-    encode.mkString
-  }
+  override def toString: String = encode.mkString
 
-  def compare(that: Id): Int = {
-    value.toString compare that.value.toString
-  }
+  def compare(that: Id): Int = this.toString compare that.toString
 
   private def encode: Array[Char] = {
     val result = new Array[Char](EncodedLen)

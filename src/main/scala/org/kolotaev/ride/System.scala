@@ -25,9 +25,7 @@ object System {
     bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }
 
-  def timestamp: Int = {
-    (java.lang.System.currentTimeMillis / 1000).toInt
-  }
+  def timestamp: Int = (java.lang.System.currentTimeMillis / 1000).toInt
 
   def processID: Int = {
     // default to random value if PID can't be obtained. In most cases it won't happen
