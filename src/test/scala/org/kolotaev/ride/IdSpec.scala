@@ -38,10 +38,6 @@ class IdSpec extends FlatSpec with Matchers {
     Id().pid shouldBe > (0.toShort)
   }
 
-  "ID's pid part" should "not represent the real Process ID" in {
-    assert(Id().pid != System.processID)
-  }
-
   "ID's counter part" should "increase monotonically" in {
     val ids: Array[Id] = Array[Id](Id(), Id(), Id(), Id(), Id())
     ids(0).counter should be < ids(1).counter
