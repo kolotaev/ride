@@ -26,7 +26,6 @@ object Id {
   def apply(str: String): Id = new Id(str)
 }
 
-// todo - decide on long value
 @SerialVersionUID(100L)
 class Id extends Serializable with Ordered[Id] {
   import Id._
@@ -81,7 +80,6 @@ class Id extends Serializable with Ordered[Id] {
   def pid: Short = ByteBuffer.wrap(value.slice(7, 9)).getShort
 
   def counter: Int = {
-    // todo - int enough???
     val bytes = value.slice(9, 12)
     bytes(0) << 16 | bytes(1) << 8 | bytes(2)
   }

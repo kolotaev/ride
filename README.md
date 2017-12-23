@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/kolotaev/ride.svg?branch=master)](https://travis-ci.org/kolotaev/ride)
 [![codecov.io](https://codecov.io/github/kolotaev/ride/coverage.svg?branch=master)](https://codecov.io/github/kolotaev/ride?branch=master)
 
-Scala global unique identifier (GUID) generator.
+Scala global unique identifier (GUID) generator for large systems.
 
 
 ## Description
@@ -26,12 +26,12 @@ sortable property of the ID.
 
 ## Features
 
-- Size: 12 bytes (96 bits), smaller than UUID, larger than snowflake
-- Base32 hex encoded by default (20 chars when transported as printable string, still sortable)
-- Non configured, you don't need to set up a unique machine and/or data center ID
+- Size: 12 bytes (96 bits). See [comparison](#comparison-with-other-unique-identifiers)
+- Guaranteed uniqueness for 16,777,216 (24 bits) IDs per second and per host/process
+- Base32 hex encoded by default (20 chars when transported as printable string, sortable)
 - K-ordered
+- No need to set up a unique machine and/or data center ID
 - Embedded time with 1 second precision
-- Unicity guaranteed for 16,777,216 (24 bits) unique IDs per second and per host/process
 - Lock-free
 
 
@@ -63,7 +63,7 @@ val guid2 = Id("b8uhqvioith6uqnvvvq0")
 println(s"$guid" == s"$guid2")
 // guid and guid2 are the same strings
 
-// Creating ID from malformed string IllegalArgumentException throws an exception
+// Creating ID from malformed string throws IllegalArgumentException exception
 val guid3 = Id("bad-string")
 ```
 
@@ -71,7 +71,7 @@ Obtaining embedded info:
 
 ```scala
 guid.time
-// => java.time.LocalDateTime = 2017-12-22T17:58:06
+// => java.time.LocalDateTime = 2017-12-22T23:58:06
 // Local time embedded into ID
 
 guid.pid
