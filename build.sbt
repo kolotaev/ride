@@ -1,6 +1,6 @@
 name := "Ride"
  
-version := "1.0.0-SNAPSHOT"
+version := "1.0.0"
  
 scalaVersion := "2.12.2"
 
@@ -19,6 +19,8 @@ scmInfo := Some(
   )
 )
 
+publishArtifact in Test := false
+
 developers := List(
   Developer(
     id    = "kolotaev",
@@ -29,11 +31,8 @@ developers := List(
 )
 //
 //publishTo := {
-//  val nexus = "https://oss.sonatype.org/"
 //  if (version.value.trim.endsWith("SNAPSHOT"))
-//    Some("snapshots" at nexus + "content/repositories/snapshots")
+//    Opts.resolver.sonatypeSnapshots
 //  else
-//    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+//    Opts.resolver.sonatypeStaging
 //}
-
-publishArtifact in Test := false

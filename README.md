@@ -105,6 +105,15 @@ is required so it can be used directly in server's code.
 | _Ride_      | 12 bytes    | 20 chars       | configuration free, sortable
 
 
+## Benchmarks
+
+| Name                | x10    |   x100  |   x1000 | x100,000 | x1,000,000 | x10,000,000
+|---------------------|--------|---------|---------|----------|------------|--------------
+| _java.util UUID v4_ | 6 msec | 6 msec  | 10 msec | 212 msec | 1910 msec  | 20410 msec
+| _java.util UUID v3_ | 1 msec | 3 msec  | 15 msec | 92 msec  | 439 msec   | 4074 msec
+| _Ride_              | 9 msec | 10 msec | 15 msec | 36 msec  | 107 msec   | 859 msec
+
+
 ## License
 
 The source code is licensed under the [MIT License](https://raw.github.com/kolotaev/ride/master/LICENSE).
