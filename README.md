@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kolotaev/ride.svg?branch=master)](https://travis-ci.org/kolotaev/ride)
 [![codecov.io](https://codecov.io/github/kolotaev/ride/coverage.svg?branch=master)](https://codecov.io/github/kolotaev/ride?branch=master)
+[![Download](https://api.bintray.com/packages/kolotaev/org.kolotaev/ride/images/download.svg)](https://bintray.com/kolotaev/org.kolotaev/ride/_latestVersion)
 
 Scala global unique identifier (GUID) generator for large systems.
 
@@ -36,6 +37,12 @@ sortable property of the ID.
 
 
 ## Usage
+
+Install:
+
+```scala
+libraryDependencies += "ride" %% "ride" % "1.0.0"
+```
 
 Generating IDs:
 
