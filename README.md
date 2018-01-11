@@ -41,13 +41,13 @@ sortable property of the ID.
 Install:
 
 ```scala
-libraryDependencies += "ride" %% "ride" % "1.0.0"
+libraryDependencies += "com.github.kolotaev" %% "ride" % "1.0.0"
 ```
 
 Generating IDs:
 
 ```scala
-import org.kolotaev.ride.Id
+import com.github.kolotaev.ride.Id
 
 val guid = Id()
 
