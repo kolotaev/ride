@@ -38,15 +38,15 @@ sortable property of the ID.
 
 ## Usage
 
-Install:
+#### Install
 
 In your `build.sbt` add
 ```scala
-resolvers += Resolver.bintrayRepo("kolotaev", "maven")
+resolvers += Resolver.jcenterRepo
 libraryDependencies += "com.github.kolotaev" %% "ride" % "1.0.0"
 ```
 
-Generating IDs:
+#### Generating IDs
 
 ```scala
 import com.github.kolotaev.ride.Id
@@ -64,7 +64,7 @@ val ids = Array.fill[Id](3) { Id() }
 // Array(b8ui8kioith721fvvvj0, b8ui8kioith721fvvvjg, b8ui8kioith721fvvvk0)
 ```
 
-Reproducing IDs:
+#### Reproducing IDs
 
 ```scala
 val guid2 = Id("b8uhqvioith6uqnvvvq0")
@@ -76,7 +76,7 @@ println(s"$guid" == s"$guid2")
 val guid3 = Id("bad-string")
 ```
 
-Obtaining embedded info:
+#### Obtaining embedded info
 
 ```scala
 guid.time
@@ -94,6 +94,8 @@ guid.machine
 guid.counter
 // Int = 56
 ```
+
+#### Other
 
 Ride implements `Serializable` and `Ordered[T]`.
 
@@ -116,11 +118,13 @@ is required so it can be used directly in server's code.
 
 ## Benchmarks
 
+Approximate relative performance metrics.
+
 | Name                | x10    |   x100  |   x1000 | x100,000 | x1,000,000 | x10,000,000
 |---------------------|--------|---------|---------|----------|------------|--------------
-| _java.util UUID v4_ | 6 msec | 6 msec  | 10 msec | 212 msec | 1910 msec  | 20410 msec
-| _java.util UUID v3_ | 1 msec | 3 msec  | 15 msec | 92 msec  | 439 msec   | 4074 msec
-| _Ride_              | 9 msec | 10 msec | 15 msec | 36 msec  | 107 msec   | 859 msec
+| _java.util UUID v4_ | 6 msec | 6 msec  | 10 msec | 212 msec | 1910 msec  | 20 sec
+| _java.util UUID v3_ | 1 msec | 3 msec  | 15 msec | 92 msec  | 439 msec   | 4 sec
+| _Ride_              | 9 msec | 10 msec | 15 msec | 36 msec  | 107 msec   | 0.86 sec
 
 
 ## License
