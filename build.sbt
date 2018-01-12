@@ -1,6 +1,6 @@
 name := "Ride"
  
-version := "1.0.1"
+version := "1.0.0"
 
 val username = "kolotaev"
 val repo = "ride"
