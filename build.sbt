@@ -1,17 +1,21 @@
-name := "Ride"
- 
+val username = "kolotaev"
+val repo = "ride"
+
+name := "ride"
+organization := s"com.github.$username"
 version := "1.0.0"
- 
+
 scalaVersion := "2.12.2"
+javacOptions ++= Seq(
+  "-source", "1.8", "-target", "1.8", "-Xlint"
+)
 
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
-
-homepage := Some(url("https://github.com/kolotaev/ride"))
-
+homepage := Some(url(s"https://github.com/$username/$repo"))
 pomExtra :=
   <scm>
     <connection>
@@ -29,12 +33,10 @@ pomExtra :=
     </developer>
   </developers>
 
-
 publishTo := Some(
   "bintray" at
     "https://api.bintray.com/maven/kolotaev/" +
-      "org.kolotaev/ride/;publish=1")
+      "maven/ride/;publish=1")
 credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
 publishMavenStyle := true
-
 publishArtifact in Test := false
