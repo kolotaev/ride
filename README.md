@@ -127,6 +127,11 @@ Approximate relative performance metrics.
 | _Ride_              | 9 msec | 10 msec | 15 msec | 36 msec  | 107 msec   | 0.86 sec
 
 
+## References
+
+The library is a JVM implementation of the awesome Golang library [xid](https://github.com/rs/xid).
+
+
 ## License
 
 The source code is licensed under the [MIT License](https://raw.github.com/kolotaev/ride/master/LICENSE).
