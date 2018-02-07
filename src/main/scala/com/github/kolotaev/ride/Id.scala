@@ -134,4 +134,19 @@ class Id extends Serializable with Ordered[Id] {
   private def v(i: Int): Int = {
     if (value(i) < 0) value(i) + 256 else value(i).toInt
   }
+
+  def canEqual(other: Any): Boolean = other.isInstanceOf[Id]
+
+  override def equals(other: Any): Boolean = other match {
+    case that: Id =>
+      (that canEqual this) &&
+        value.deep == that.value.deep
+    case _ => false
+  }
+
+  override def hashCode(): Int = {
+    val state = Seq(value)
+    state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+  }
+
 }
