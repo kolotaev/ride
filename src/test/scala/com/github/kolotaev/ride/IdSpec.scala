@@ -106,10 +106,10 @@ class IdSpec extends FlatSpec with Matchers {
     s"$b" should equal (s"$a")
   }
 
-  "IDs" should "be converted to itself back and forth and be not equal as objects" in {
+  "IDs" should "be converted to itself back and forth and be equal as objects" in {
     val a = Id()
     val b = Id(a.toString)
-    b shouldNot equal (a)
+    b should equal (a)
   }
 
   "IDs" should "be converted to itself back and forth and be equal as strings" in {
