@@ -112,6 +112,17 @@ class IdSpec extends FlatSpec with Matchers {
     b should equal (a)
   }
 
+  "IDs" should "not be equal as objects if they represent different values" in {
+    val a = Id()
+    val b = Id()
+    b shouldNot equal(a)
+  }
+
+  "ID" should "not be equal as objects with the string representation of itself" in {
+    val a = Id()
+    a shouldNot equal(a.toString)
+  }
+
   "IDs" should "be converted to itself back and forth and be equal as strings" in {
     val a = Id()
     val b = new Id(a.toString)
