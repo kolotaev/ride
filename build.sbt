@@ -3,7 +3,7 @@ val repo = "ride"
 
 name := "ride"
 organization := s"com.github.$username"
-version := "1.0.1-SNAPSHOT"
+version := "1.0.1"
 
 scalaVersion := "2.12.2"
 javacOptions ++= Seq(
