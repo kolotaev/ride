@@ -43,7 +43,7 @@ sortable property of the ID.
 In your `build.sbt` add
 ```scala
 resolvers += Resolver.jcenterRepo
-libraryDependencies += "com.github.kolotaev" %% "ride" % "1.0.0"
+libraryDependencies += "com.github.kolotaev" %% "ride" % "1.0.1"
 ```
 
 #### Generating IDs
@@ -69,8 +69,11 @@ val ids = Array.fill[Id](3) { Id() }
 ```scala
 val guid2 = Id("b8uhqvioith6uqnvvvq0")
 
+println(guid == guid2)
+// true. guid and guid2 are considered equal objects, since they represent the same Id value
+
 println(s"$guid" == s"$guid2")
-// guid and guid2 are the same strings
+// true. guid and guid2 are the same strings
 
 // Creating ID from malformed string throws IllegalArgumentException exception
 val guid3 = Id("bad-string")
