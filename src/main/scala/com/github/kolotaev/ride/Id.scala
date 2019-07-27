@@ -24,50 +24,73 @@ object Id {
   def apply(): Id = new Id()
 
   def apply(str: String): Id = new Id(str)
-}
 
-@SerialVersionUID(100L)
-class Id extends Serializable with Ordered[Id] {
-  import Id._
+  def apply(ba: Array[Byte]): Id = new Id(Some(ba))
 
-  // Constructing id value:
-  private val value: Array[Byte] = Array.fill[Byte](BinaryLen)(0)
-
-  // put first 4 bytes from current timestamp
-  private val timestamp: Int = System.timestamp
-  value(0) = (timestamp >> 24).toByte
-  value(1) = (timestamp >> 16).toByte
-  value(2) = (timestamp >> 8).toByte
-  value(3) = timestamp.toByte
-
-  // next 3 bytes are the machine ID taken from md5 hash of the hostname
-  value(4) = machineID(0)
-  value(5) = machineID(1)
-  value(6) = machineID(2)
-
-  // next 2 bytes are the current process ID
-  value(7) = (PID >> 8).toByte
-  value(8) = PID.toByte
-
-  // next 3 bytes are from ID counter
-  private val i: Int = idCounter.incrementAndGet
-  value(9) = (i >> 16).toByte
-  value(10) = (i >> 8).toByte
-  value(11) = i.toByte
-
-
-  def this(str: String) {
-    this
-    // Spare counter increment is not valid in case of constructing from string
-    idCounter.decrementAndGet
-
+  private def decode(s: String): Array[Byte] = {
     val pattern = s"[$encodeTable]{20}".r
-    str match {
+    s match {
       case pattern() =>
       case _ => throw new IllegalArgumentException(s"Argument should be 20 chars of any in $encodeTable")
     }
 
-    decode(str)
+    val src: Array[Byte] = s.getBytes(Charset.forName("ASCII"))
+    val target = Array.fill[Byte](BinaryLen)(0)
+    target(0) = (decodeTable(src(0)) << 3 | decodeTable(src(1)) >> 2).toByte
+    target(1) = (decodeTable(src(1)) << 6 | decodeTable(src(2)) << 1 | decodeTable(src(3)) >> 4).toByte
+    target(2) = (decodeTable(src(3)) << 4 | decodeTable(src(4)) >> 1).toByte
+    target(3) = (decodeTable(src(4)) << 7 | decodeTable(src(5)) << 2 | decodeTable(src(6)) >> 3).toByte
+    target(4) = (decodeTable(src(6)) << 5 | decodeTable(src(7))).toByte
+    target(5) = (decodeTable(src(8)) << 3 | decodeTable(src(9)) >> 2).toByte
+    target(6) = (decodeTable(src(9)) << 6 | decodeTable(src(10)) << 1 | decodeTable(src(11)) >> 4).toByte
+    target(7) = (decodeTable(src(11)) << 4 | decodeTable(src(12)) >> 1).toByte
+    target(8) = (decodeTable(src(12)) << 7 | decodeTable(src(13)) << 2 | decodeTable(src(14)) >> 3).toByte
+    target(9) = (decodeTable(src(14)) << 5 | decodeTable(src(15))).toByte
+    target(10) = (decodeTable(src(16)) << 3 | decodeTable(src(17)) >> 2).toByte
+    target(11) = (decodeTable(src(17)) << 6 | decodeTable(src(18)) << 1 | decodeTable(src(19)) >> 4).toByte
+    target
+  }
+}
+
+@SerialVersionUID(100L)
+class Id(bytes: Option[Array[Byte]] = None) extends Serializable with Ordered[Id] {
+  import Id._
+
+  bytes.find { _.length != BinaryLen }.foreach { _ =>
+    throw new IllegalArgumentException(s"Binary representation must have length $BinaryLen")
+  }
+
+  // Constructing id value:
+  private val value: Array[Byte] = bytes.getOrElse {
+    val ba = Array.fill[Byte](BinaryLen)(0)
+
+    // put first 4 bytes from current timestamp
+    val timestamp: Int = System.timestamp
+    ba(0) = (timestamp >> 24).toByte
+    ba(1) = (timestamp >> 16).toByte
+    ba(2) = (timestamp >> 8).toByte
+    ba(3) = timestamp.toByte
+
+    // next 3 bytes are the machine ID taken from md5 hash of the hostname
+    ba(4) = machineID(0)
+    ba(5) = machineID(1)
+    ba(6) = machineID(2)
+
+    // next 2 bytes are the current process ID
+    ba(7) = (PID >> 8).toByte
+    ba(8) = PID.toByte
+
+    // next 3 bytes are from ID counter
+    val i: Int = idCounter.incrementAndGet
+    ba(9) = (i >> 16).toByte
+    ba(10) = (i >> 8).toByte
+    ba(11) = i.toByte
+    ba
+  }
+
+
+  def this(str: String) {
+    this(Some(Id.decode(str)))
   }
 
   def time: LocalDateTime = {
@@ -113,22 +136,6 @@ class Id extends Serializable with Ordered[Id] {
     result(18) = encodeTable((v(11) >> 1) & 0x1F)
     result(19) = encodeTable((v(11) << 4) & 0x1F)
     result
-  }
-
-  private def decode(s: String): Unit = {
-    val src: Array[Byte] = s.getBytes(Charset.forName("ASCII"))
-    value(0) = (decodeTable(src(0)) << 3 | decodeTable(src(1)) >> 2).toByte
-    value(1) = (decodeTable(src(1)) << 6 | decodeTable(src(2)) << 1 | decodeTable(src(3)) >> 4).toByte
-    value(2) = (decodeTable(src(3)) << 4 | decodeTable(src(4)) >> 1).toByte
-    value(3) = (decodeTable(src(4)) << 7 | decodeTable(src(5)) << 2 | decodeTable(src(6)) >> 3).toByte
-    value(4) = (decodeTable(src(6)) << 5 | decodeTable(src(7))).toByte
-    value(5) = (decodeTable(src(8)) << 3 | decodeTable(src(9)) >> 2).toByte
-    value(6) = (decodeTable(src(9)) << 6 | decodeTable(src(10)) << 1 | decodeTable(src(11)) >> 4).toByte
-    value(7) = (decodeTable(src(11)) << 4 | decodeTable(src(12)) >> 1).toByte
-    value(8) = (decodeTable(src(12)) << 7 | decodeTable(src(13)) << 2 | decodeTable(src(14)) >> 3).toByte
-    value(9) = (decodeTable(src(14)) << 5 | decodeTable(src(15))).toByte
-    value(10) = (decodeTable(src(16)) << 3 | decodeTable(src(17)) >> 2).toByte
-    value(11) = (decodeTable(src(17)) << 6 | decodeTable(src(18)) << 1 | decodeTable(src(19)) >> 4).toByte
   }
 
   private def v(i: Int): Int = {
