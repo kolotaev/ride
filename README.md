@@ -43,7 +43,7 @@ sortable property of the ID.
 In your `build.sbt` add
 ```scala
 resolvers += Resolver.jcenterRepo
-libraryDependencies += "com.github.kolotaev" %% "ride" % "1.0.1"
+libraryDependencies += "com.github.kolotaev" %% "ride" % "1.1.0"
 ```
 
 #### Generating IDs
@@ -77,6 +77,13 @@ println(s"$guid" == s"$guid2")
 
 // Creating ID from malformed string throws IllegalArgumentException exception
 val guid3 = Id("bad-string")
+
+
+// Id can be reconstructed with byte-array representation (useful when you save it as bytes, for example in DB)
+val guid4 = Id(Array[Byte](90, 61, 13, 107, 88, -105, 98, 106, -53, -1, -1, -3))
+
+// Creating ID from incorrect byte-array throws IllegalArgumentException exception
+val guid5 = Id(Array[Byte](90, 61, 13))
 ```
 
 #### Obtaining embedded info
