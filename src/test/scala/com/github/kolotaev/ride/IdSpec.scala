@@ -58,7 +58,7 @@ class IdSpec extends FlatSpec with Matchers {
     s"$a".length should be (20)
   }
 
-  "ID getBytes" should "return its bytes-array representation" in {
+  "ID getBytes" should "return its byte-array representation" in {
     val a = Id("b8ugqqqoith6livvvvug")
     a.getBytes should be (Array[Byte](90, 61, 13, 107, 88, -105, 98, 106, -53, -1, -1, -3))
   }
@@ -76,16 +76,7 @@ class IdSpec extends FlatSpec with Matchers {
     ids.toSet.size should equal (ids.length)
   }
 
-  "IDs" should "not increment counter when constructed with string" in {
-    val a = Id()
-    new Id(a.toString)
-    new Id(a.toString)
-    val c = Id()
-    val diff = c.counter - a.counter
-    diff should equal (1)
-  }
-
-  "IDs" should "be constructed correctly value when constructed using a bytes-array representation" in {
+  "IDs" should "be constructed correctly when constructed using a byte-array representation" in {
     val bytes = Array[Byte](90, 61, 13, 107, 88, -105, 98, 106, -53, -1, -1, -3)
     val strId = "b8ugqqqoith6livvvvug"
     val a = Id(bytes)
@@ -94,10 +85,33 @@ class IdSpec extends FlatSpec with Matchers {
     a should be (Id(strId))
   }
 
-  "IDs" should "not increment counter when constructed with byte array" in {
+  "IDs" should "not increment counter when constructed with byte-array" in {
     val a = Id()
     Id(a.getBytes)
     Id(a.getBytes)
+    val c = Id()
+    val diff = c.counter - a.counter
+    diff should equal (1)
+  }
+
+  "ID" should "throw IllegalArgumentException if wrong byte-array is passed to constructor" in {
+    val data = List(
+      Array[Byte](),
+      Array[Byte](1, 2, 3),
+      Array.fill[Byte](11)(1),
+      Array.fill[Byte](13)(1)
+    )
+    for (i <- data) {
+      an [IllegalArgumentException] should be thrownBy {
+        Id(i)
+      }
+    }
+  }
+
+  "IDs" should "not increment counter when constructed with string" in {
+    val a = Id()
+    new Id(a.toString)
+    new Id(a.toString)
     val c = Id()
     val diff = c.counter - a.counter
     diff should equal (1)
@@ -112,13 +126,13 @@ class IdSpec extends FlatSpec with Matchers {
       "b8sito2oithdkeou65xy"
     )
     for (i <- data) {
-      a [IllegalArgumentException] should be thrownBy {
+      an [IllegalArgumentException] should be thrownBy {
         Id(i)
       }
     }
   }
 
-  "IDs" should "support round-trip" in {
+  "IDs" should "support round-trip with string representation" in {
     val a = Id()
     val b = Id(Id(Id(a.toString).toString).toString)
     s"$b" should equal (s"$a")
