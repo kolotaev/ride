@@ -85,6 +85,24 @@ class IdSpec extends FlatSpec with Matchers {
     diff should equal (1)
   }
 
+  "IDs" should "be constructed correctly value when constructed using a bytes-array representation" in {
+    val bytes = Array[Byte](90, 61, 13, 107, 88, -105, 98, 106, -53, -1, -1, -3)
+    val strId = "b8ugqqqoith6livvvvug"
+    val a = Id(bytes)
+    a.getBytes should be (bytes)
+    a.toString should be (strId)
+    a should be (Id(strId))
+  }
+
+  "IDs" should "not increment counter when constructed with byte array" in {
+    val a = Id()
+    Id(a.getBytes)
+    Id(a.getBytes)
+    val c = Id()
+    val diff = c.counter - a.counter
+    diff should equal (1)
+  }
+
   "ID" should "throw IllegalArgumentException if wrong base32 string is passed to constructor" in {
     val data = List(
       "",
