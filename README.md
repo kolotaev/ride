@@ -43,7 +43,7 @@ sortable property of the ID.
 In your `build.sbt` add
 ```scala
 resolvers += Resolver.jcenterRepo
-libraryDependencies += "com.github.kolotaev" %% "ride" % "1.1.0"
+libraryDependencies += "com.github.kolotaev" %% "ride" % "(version)"
 ```
 
 #### Generating IDs

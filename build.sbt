@@ -1,17 +1,21 @@
 val username = "kolotaev"
 val repo = "ride"
 
+val SCALA_2_12 = "2.12.2"
+val SCALA_2_13 = "2.13.1"
+
 name := "ride"
 organization := s"com.github.$username"
 version := "1.1.0"
 
-scalaVersion := "2.12.2"
+scalaVersion := SCALA_2_12
+crossScalaVersions := Seq(SCALA_2_12, SCALA_2_13)
 javacOptions ++= Seq(
   "-source", "1.8", "-target", "1.8", "-Xlint"
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.8" % "test"
 )
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))

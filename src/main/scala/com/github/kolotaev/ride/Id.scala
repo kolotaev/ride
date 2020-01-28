@@ -147,7 +147,7 @@ class Id(bytes: Option[Array[Byte]] = None) extends Serializable with Ordered[Id
   override def equals(other: Any): Boolean = other match {
     case that: Id =>
       (that canEqual this) &&
-        value.deep == that.value.deep
+        value.mkString == that.value.mkString
     case _ => false
   }
 
