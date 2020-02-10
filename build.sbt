@@ -6,7 +6,7 @@ val SCALA_2_13 = "2.13.1"
 
 name := "ride"
 organization := s"com.github.$username"
-version := "1.1.0"
+version := "1.1.1"
 
 scalaVersion := SCALA_2_12
 crossScalaVersions := Seq(SCALA_2_12, SCALA_2_13)
