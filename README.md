@@ -42,7 +42,10 @@ sortable property of the ID.
 
 In your `build.sbt` add
 ```scala
-resolvers += Resolver.jcenterRepo
+resolvers += Resolver.jcenterRepo // For Scala == 2.12
+// or
+resolvers += Resolver.bintrayRepo("kolotaev", "maven") // For Scala >= 2.12
+
 libraryDependencies += "com.github.kolotaev" %% "ride" % "(version)"
 ```
 

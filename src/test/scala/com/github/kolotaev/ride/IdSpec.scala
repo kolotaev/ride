@@ -34,11 +34,13 @@ class IdSpec extends FlatSpec with Matchers {
     ids(3).pid should equal (ids(2).pid)
   }
 
-  "ID's pid part" should "be positive" in {
-    Id().pid shouldBe > (0.toShort)
+  "ID's pid part" should "be the same for all IDs in this process" in {
+    val ids = Array[Id](Id(), Id(), Id(), Id(), Id(), Id(), Id()).map(_.pid)
+    ids.distinct.length should equal (1)
   }
 
-  "ID's counter part" should "increase monotonically" in {
+  // "ID's counter part" - flaky: rewrite it to respect overflow. See also github issue #7
+  ignore should "increase monotonically" in {
     val ids: Array[Id] = Array[Id](Id(), Id(), Id(), Id(), Id())
     ids(0).counter should be < ids(1).counter
     ids(1).counter should be < ids(2).counter
