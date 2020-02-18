@@ -25,7 +25,7 @@ Added:
 
 Added:
 
-- Id object equality
+- Id object equality.
 
 
 
