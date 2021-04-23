@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/kolotaev/ride.svg?branch=master)](https://travis-ci.org/kolotaev/ride)
 [![codecov.io](https://codecov.io/github/kolotaev/ride/coverage.svg?branch=master)](https://codecov.io/github/kolotaev/ride?branch=master)
-[![Download](https://api.bintray.com/packages/kolotaev/maven/ride/images/download.svg)](https://bintray.com/kolotaev/maven/ride/_latestVersion)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.kolotaev/ride_2.12.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.kolotaev%22%20AND%20a:%22ride_2.12%22)
 
 Scala global unique identifier (GUID) generator for large systems.
 
@@ -42,11 +42,7 @@ sortable property of the ID.
 
 In your `build.sbt` add
 ```scala
-resolvers += Resolver.jcenterRepo // For Scala == 2.12
-// or
-resolvers += Resolver.bintrayRepo("kolotaev", "maven") // For Scala >= 2.12
-
-libraryDependencies += "com.github.kolotaev" %% "ride" % "(version)"
+libraryDependencies += "com.github.kolotaev" %% "ride" % "$VERSION_YOU_NEED"
 ```
 
 #### Generating IDs
