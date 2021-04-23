@@ -15,11 +15,22 @@ javacOptions ++= Seq(
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.8" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.8" % Test
 )
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
 homepage := Some(url(s"https://github.com/$username/$repo"))
+
+publishMavenStyle := true
+publishArtifact in Test := false
+
+publishTo := Some(
+  if (isSnapshot.value)
+    Opts.resolver.sonatypeSnapshots
+  else
+    Opts.resolver.sonatypeStaging
+)
+
 pomExtra :=
   <scm>
     <connection>
@@ -36,11 +47,3 @@ pomExtra :=
       <email>ekolotaev@gmail.com</email>
     </developer>
   </developers>
-
-publishTo := Some(
-  "bintray" at
-    "https://api.bintray.com/maven/kolotaev/" +
-      "maven/ride/;publish=1")
-credentials += Credentials(Path.userHome / ".sbt" / ".credentials")
-publishMavenStyle := true
-publishArtifact in Test := false
