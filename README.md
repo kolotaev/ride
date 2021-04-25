@@ -2,7 +2,8 @@
 
 [![Build Status](https://travis-ci.org/kolotaev/ride.svg?branch=master)](https://travis-ci.org/kolotaev/ride)
 [![codecov.io](https://codecov.io/github/kolotaev/ride/coverage.svg?branch=master)](https://codecov.io/github/kolotaev/ride?branch=master)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.kolotaev/ride_2.12.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.github.kolotaev%22%20AND%20a:%22ride_2.12%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.kolotaev/ride_2.12.svg?label=Maven%20Central%20|%20Scala%202.12)](https://search.maven.org/search?q=g:%22com.github.kolotaev%22%20AND%20a:%22ride_2.12%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.kolotaev/ride_2.13.svg?label=Maven%20Central%20|%20Scala%202.13)](https://search.maven.org/search?q=g:%22com.github.kolotaev%22%20AND%20a:%22ride_2.13%22)
 
 Scala global unique identifier (GUID) generator for large systems.
 
