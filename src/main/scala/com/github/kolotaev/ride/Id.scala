@@ -89,7 +89,7 @@ class Id(bytes: Option[Array[Byte]] = None) extends Serializable with Ordered[Id
   }
 
 
-  def this(str: String) {
+  def this(str: String) = {
     this(Some(Id.decode(str)))
   }
 
