@@ -1,8 +1,8 @@
 val username = "kolotaev"
 val repo = "ride"
 
-val SCALA_2_12 = "2.12.2"
-val SCALA_2_13 = "2.13.1"
+val SCALA_2_12 = "2.12.15"
+val SCALA_2_13 = "2.13.10"
 
 name := "ride"
 organization := s"com.github.$username"
