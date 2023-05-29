@@ -3,26 +3,27 @@ val repo = "ride"
 
 val SCALA_2_12 = "2.12.15"
 val SCALA_2_13 = "2.13.10"
+val SCALA_3 = "3.2.2"
 
 name := "ride"
 organization := s"com.github.$username"
-version := "1.1.1"
+version := "1.2.0"
 
 scalaVersion := SCALA_2_12
-crossScalaVersions := Seq(SCALA_2_12, SCALA_2_13)
+crossScalaVersions := Seq(SCALA_2_12, SCALA_2_13, SCALA_3)
 javacOptions ++= Seq(
   "-source", "1.8", "-target", "1.8", "-Xlint"
 )
 
 libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.8" % Test
+  "org.scalatest" %% "scalatest" % "3.2.16" % Test
 )
 
 licenses := Seq("MIT" -> url("https://opensource.org/licenses/MIT"))
 homepage := Some(url(s"https://github.com/$username/$repo"))
 
 publishMavenStyle := true
-publishArtifact in Test := false
+Test / publishArtifact := false
 
 publishTo := Some(
   if (isSnapshot.value)

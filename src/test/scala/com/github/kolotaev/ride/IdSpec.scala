@@ -1,13 +1,15 @@
 package com.github.kolotaev.ride
 
-import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
+
 import java.time._
 import scala.util.Random
-import java.io.{ObjectOutputStream, ObjectInputStream}
-import java.io.{FileOutputStream, FileInputStream}
+import java.io.{ObjectInputStream, ObjectOutputStream}
+import java.io.{FileInputStream, FileOutputStream}
 
 
-class IdSpec extends FlatSpec with Matchers {
+class IdSpec extends AnyFlatSpec with Matchers {
   "ID" should "support parts extraction: time" in {
     val id: Id = Id()
     val now = LocalDateTime.now(ZoneId.systemDefault)
