@@ -1,6 +1,13 @@
 # Change Log
 
 
+## 1.2.0 - [2023-05-29]
+
+Added:
+
+- Support for Scala 3.
+
+
 ## 1.1.1 - [2020-02-10]
 
 Added:
