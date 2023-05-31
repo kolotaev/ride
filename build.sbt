@@ -25,12 +25,13 @@ homepage := Some(url(s"https://github.com/$username/$repo"))
 publishMavenStyle := true
 Test / publishArtifact := false
 
-publishTo := Some(
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value)
-    Opts.resolver.sonatypeSnapshots
+    Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Opts.resolver.sonatypeStaging
-)
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
 
 pomExtra :=
   <scm>
