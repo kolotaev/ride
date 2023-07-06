@@ -4,12 +4,14 @@
 - Make sure you have Nexus account credentials in `~/.sbt/$SBT_VERSION/sonatype.sbt`
     Example:
     ```scala
-    credentials += Credentials(
-        "Sonatype Nexus Repository Manager",
-        "oss.sonatype.org",
-        "your-username",
-        "your-password"
-    )
+    credentials += Credentials(Path.userHome / ".sbt" / "sonatype_credentials")
+    ```
+    And a protected file with credentials:
+    ```
+    realm=Sonatype Nexus Repository Manager
+    host=oss.sonatype.org
+    user=<your username>
+    password=<your password>
     ```
 - List GPG keys with `sbt pgp-cmd list-keys`
 - Check the presence of key for this library release (it's called `ride`). If not found: generate a new one with `sbt pgp-cmd gen-key` and then post it to GPG ubuntu keyserver with `sbt pgp-cmd send-key ride http://keyserver.ubuntu.com:11371`
